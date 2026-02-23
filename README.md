@@ -1,2 +1,2 @@
 # cartographer
-rightrice Portfolio - Cartographer of Networks
+rightrice - Cartographer of Networks
