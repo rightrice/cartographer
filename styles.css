@@ -1011,3 +1011,25 @@ a:hover { text-decoration: underline; }
   outline: 2px solid rgba(42, 161, 152, 0.65);
   outline-offset: 3px;
 }
+/* mapOS: header nav pills (scoped) */
+.log-page .nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: var(--map-font-mono);
+  font-size: 12px;
+  color: var(--map-text);
+  text-decoration: none;
+
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(88, 110, 117, 0.45);
+  background: rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+
+.log-page .nav-pill:hover {
+  border-color: rgba(42, 161, 152, 0.55);
+  background: rgba(42, 161, 152, 0.08);
+}

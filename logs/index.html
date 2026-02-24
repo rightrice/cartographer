@@ -11,10 +11,22 @@
 
 <body class="log-page" data-theme="dark">
     <header class="log-header">
-        <div class="coordinate">logs://index</div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div>
+                <div class="coordinate">logs://index</div>
+            </div>
+    
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <a class="nav-pill" href="/index.html" aria-label="Back to main index">← cd /home</a>
+                <button id="themeToggle" class="nav-pill" type="button" aria-label="Toggle light/dark mode">
+                    ☀︎/☾ theme
+                </button>
+            </div>
+        </div>
+    
         <h1>Logs — Coordinate Index</h1>
         <div class="classification">mapOS • Cartographer of Networks • Searchable log registry</div>
-    </header>
+        </header>
 
     <section class="log-summary">
         <p>
@@ -303,6 +315,34 @@
 
             init();
         })();
+        (() => {
+                const STORAGE_KEY = "mapos-theme"; // "light" | "dark"
+                const body = document.body;
+                const btn = document.getElementById("themeToggle");
+
+                function getPreferredTheme() {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved === "light" || saved === "dark") return saved;
+                    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+                }
+
+                function applyTheme(theme) {
+                    body.setAttribute("data-theme", theme);
+                    localStorage.setItem(STORAGE_KEY, theme);
+                    if (btn) btn.textContent = theme === "light" ? "☾ dark" : "☀︎ light";
+                }
+
+                // init
+                applyTheme(getPreferredTheme());
+
+                // toggle
+                if (btn) {
+                    btn.addEventListener("click", () => {
+                        const current = body.getAttribute("data-theme") || "dark";
+                        applyTheme(current === "dark" ? "light" : "dark");
+                    });
+                }
+            })();
     </script>
 </body>
 
