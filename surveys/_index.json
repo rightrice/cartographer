@@ -1,0 +1,20 @@
+{
+  "surveys": [
+    {
+      "map": "MAP-2026/001",
+      "coordinate": "survey://MAP-2026/001",
+      "title": "Survey — HTB: Blue",
+      "href": "/surveys/survey-map-2026-001.html",
+      "platform": "Hack The Box",
+      "target": "Blue",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "terrain": "SMB",
+      "vector": "Legacy SMB exposure leading to remote compromise (lab-safe summary).",
+      "description": "Enumeration → foothold → privilege escalation → reinforcement notes (sanitized).",
+      "tags": ["htb", "windows", "smb", "enumeration", "privesc"],
+      "related": ["logs://index", "instruments://index"],
+      "updated": "2026-02-24"
+    }
+  ]
+}
