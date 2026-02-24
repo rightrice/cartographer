@@ -14,7 +14,7 @@
   }
 
   function labelFor(theme) {
-    return theme === "dark" ? "Solarized Dark" : "Solarized Light";
+    return theme === "dark" ? "Moon" : "Sun";
   }
 
   function iconFor(theme) {
