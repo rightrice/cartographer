@@ -1,30 +1,270 @@
 {
-    "version": 1,
-    "generated": "2026-02-23",
-    "logs": [
-      {
-        "coordinate": "log://bloodhound-ad",
-        "title": "BloodHound AD — Attack Path Cartography",
-        "href": "/logs/bloodhound-ad.html",
-        "region": "Active Directory",
-        "terrain": "Privilege Graph",
-        "vector": "Path Analysis",
-        "updated": "2026-02-23",
-        "description": "Graph-based mapping of AD relationships to reveal escalation and lateral movement paths.",
-        "tags": ["ad", "bloodhound", "graph", "neo4j", "paths"],
-        "related": ["instrument://sharphound", "log://kerberoasting"]
-      },
-      {
-        "coordinate": "log://kerberoasting",
-        "title": "Kerberoasting — Service Ticket Extraction & Offline Crack Pathing",
-        "href": "/logs/kerberoasting.html",
-        "region": "Active Directory",
-        "terrain": "Kerberos",
-        "vector": "Offline Credential Recovery",
-        "updated": "2026-02-23",
-        "description": "Identify SPN accounts, acquire TGS artifacts, and map recovered secrets to privilege routes.",
-        "tags": ["ad", "kerberos", "spn", "tgs", "hashes"],
-        "related": ["log://bloodhound-ad", "instrument://sharphound"]
-      }
-    ]
-  }
+  "version": 1,
+  "generated": "2026-02-23",
+  "logs": [
+    {
+      "coordinate": "log://bloodhound-ad",
+      "title": "BloodHound AD — Attack Path Cartography",
+      "href": "/logs/manual-bloodhound-ad.html",
+      "region": "Active Directory",
+      "terrain": "Privilege Graph",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Instrument: BloodHound Collector: SharpHound Engine: Neo4j",
+      "tags": [],
+      "related": []
+    },
+    {
+      "coordinate": "manual://aircrack-ng",
+      "title": "Field Manual — aircrack ng",
+      "href": "/logs/manual-aircrack-ng.html",
+      "region": "Wireless",
+      "terrain": "wireless",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Wireless assessment workflow notes for authorized environments. This manual focuses on scope\r\n                    control,\r\n                    evidence capture, and defensive reporting outcomes.",
+      "tags": [
+        "wireless",
+        "signal-survey-kit"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://airmon-ng",
+      "title": "Field Manual — airmon ng",
+      "href": "/logs/manual-airmon-ng.html",
+      "region": "Wireless",
+      "terrain": "wireless",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Enabling monitor mode cleanly and reversibly for authorized wireless assessment.",
+      "tags": [
+        "wireless"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://bbot",
+      "title": "Field Manual — bbot",
+      "href": "/logs/manual-bbot.html",
+      "region": "Recon",
+      "terrain": "recon",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Continuous OSINT + recon orchestration with disciplined scoping and output hygiene.",
+      "tags": [
+        "recon"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://cve-triage-workflow",
+      "title": "Field Manual — CVE Triage Workflow",
+      "href": "/logs/manual-cve-triage-workflow.html",
+      "region": "Vulnerability Management",
+      "terrain": "vuln management",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "A repeatable workflow for validating impact, exploitability, and remediation priorities.",
+      "tags": [
+        "vuln management"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://dig",
+      "title": "Field Manual — dig",
+      "href": "/logs/manual-dig.html",
+      "region": "DNS",
+      "terrain": "dns",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "DNS querying for diagnostics, enumeration, and validation in controlled environments.",
+      "tags": [
+        "dns"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://dnsenum",
+      "title": "Field Manual — dnsenum",
+      "href": "/logs/manual-dnsenum.html",
+      "region": "DNS",
+      "terrain": "dns",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "DNS enumeration workflow notes with focus on scope control and evidence capture.",
+      "tags": [
+        "dns"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://dnsrecon-0",
+      "title": "Field Manual — dnsrecon 0",
+      "href": "/logs/manual-dnsrecon-0.html",
+      "region": "DNS",
+      "terrain": "dns",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "DNS reconnaissance workflows for authorized environments (baseline queries and validation).",
+      "tags": [
+        "dns"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://dnsrecon-1",
+      "title": "Field Manual — dnsrecon 1",
+      "href": "/logs/manual-dnsrecon-1.html",
+      "region": "DNS",
+      "terrain": "dns",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "DNS reconnaissance workflows for authorized environments (expanded enumeration paths).",
+      "tags": [
+        "dns"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://etc-hosts",
+      "title": "Field Manual — /etc/hosts",
+      "href": "/logs/manual-etc-hosts.html",
+      "region": "Wireless",
+      "terrain": "wireless",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Wireless assessment workflow notes for authorized environments. This manual focuses on scope\r\n                    control,\r\n                    evidence capture, and defensive reporting outcomes.",
+      "tags": [
+        "wireless",
+        "signal-survey-kit"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "log://kerberoasting",
+      "title": "Kerberoasting — Service Ticket Extraction & Offline Crack Pathing",
+      "href": "/logs/manual-kerberoasting.html",
+      "region": "Active Directory",
+      "terrain": "Kerberos",
+      "vector": "Offline Credential Recovery",
+      "updated": "2026-02-23",
+      "description": "Technique: Kerberoasting Objective: Extract service ticket hashes (TGS) for SPN accounts and attempt offline\r\n            cracking Typical Outcome: Service account credential recovery → privilege escalation / lateral\r\n            movement Operational Note: Authorized lab / engagement use only",
+      "tags": [],
+      "related": []
+    },
+    {
+      "coordinate": "manual://nuclei-0",
+      "title": "Field Manual — nuclei 0",
+      "href": "/logs/manual-nuclei-0.html",
+      "region": "Scanning",
+      "terrain": "scanning",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Nuclei usage patterns for authorized scanning with disciplined template selection.",
+      "tags": [
+        "scanning"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://nuclei-1",
+      "title": "Field Manual — nuclei 1",
+      "href": "/logs/manual-nuclei-1.html",
+      "region": "Scanning",
+      "terrain": "scanning",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Nuclei usage patterns for authorized scanning with higher fidelity targeting.",
+      "tags": [
+        "scanning"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://sqlmap",
+      "title": "Field Manual — sqlmap",
+      "href": "/logs/manual-sqlmap.html",
+      "region": "Web",
+      "terrain": "web",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "SQL injection testing workflows for authorized environments with evidence capture.",
+      "tags": [
+        "web"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://sqlmap-password-dumps",
+      "title": "Field Manual — sqlmap (Password Dumps)",
+      "href": "/logs/manual-sqlmap-password-dumps.html",
+      "region": "Web",
+      "terrain": "web",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "Post-exploitation database extraction hygiene: minimizing scope and securing artifacts.",
+      "tags": [
+        "web"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://theharvester",
+      "title": "Field Manual — theharvester",
+      "href": "/logs/manual-theharvester.html",
+      "region": "OSINT",
+      "terrain": "osint",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "OSINT collection workflows with scoping, attribution, and reporting discipline.",
+      "tags": [
+        "osint"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://whois",
+      "title": "Field Manual — whois",
+      "href": "/logs/manual-whois.html",
+      "region": "OSINT",
+      "terrain": "osint",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "WHOIS lookups for asset attribution, registrant metadata, and investigative baselines.",
+      "tags": [
+        "osint"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://wifi-survey-workflow",
+      "title": "Field Manual — WiFi Survey Workflow",
+      "href": "/logs/manual-wifi-survey-workflow.html",
+      "region": "Wireless",
+      "terrain": "wireless",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "A structured workflow for authorized wireless surveying and evidence collection.",
+      "tags": [
+        "wireless"
+      ],
+      "related": []
+    },
+    {
+      "coordinate": "manual://xsstrike",
+      "title": "Field Manual — xsstrike",
+      "href": "/logs/manual-xsstrike.html",
+      "region": "Web",
+      "terrain": "web",
+      "vector": "",
+      "updated": "2026-02-23",
+      "description": "XSS testing workflows and validation steps for authorized targets.",
+      "tags": [
+        "web"
+      ],
+      "related": []
+    }
+  ]
+}
