@@ -23,7 +23,7 @@
           <a class="nav-link" href="#maproom">Maproom</a>
           <a class="nav-link" href="#instruments">Instruments</a>
           <a class="nav-link" href="#logs">Logs</a>
-          <a class="nav-link" href="#contact">Channel</a>
+          <a class="nav-link" href="#contact">Telegraph</a>
         </nav>
 
         <div class="header-actions">
@@ -92,7 +92,7 @@
                 <div class="panel-body">
                   <a class="panel-link" href="#instruments">→ instrument bay</a>
                   <a class="panel-link" href="#logs">→ expedition logs</a>
-                  <a class="panel-link" href="#contact">→ secure channel</a>
+                  <a class="panel-link" href="#contact">→ telegraph </a>
                 </div>
               </div>
 
@@ -117,41 +117,55 @@
             <h2 class="section-title">Instrument Bay</h2>
             <p class="section-desc">Projects, tools, and probes — organized as field instruments.</p>
           </div>
-
+      
           <div class="grid">
-            <article class="card">
+            <!-- CVE Probe 1 -->
+            <article class="card card-link">
               <div class="card-top">
                 <span class="tag">probe</span>
-                <span class="tag mono">placeholder</span>
+                <span class="tag mono">probe://cve-2025-0108</span>
               </div>
-              <h3 class="card-title">Terrain probe slot</h3>
-              <p class="card-desc">Controlled boundary validation, documented and reproducible.</p>
+              <h3 class="card-title">Terrain Probe — CVE-2025-0108</h3>
+              <p class="card-desc">
+                Controlled boundary validation with reproducible steps and evidence. Focus: input handling + traversal-class
+                behavior.
+              </p>
               <div class="card-actions">
-                <button class="btn btn-ghost" type="button" disabled>Artifact pending</button>
+                <a class="btn btn-primary" href="./instruments/probe-cve-2025-0108.html">Open Artifact</a>
+                <a class="btn btn-ghost" href="#logs">Related Logs</a>
               </div>
             </article>
-
-            <article class="card">
+      
+            <!-- CVE Probe 2 -->
+            <article class="card card-link">
+              <div class="card-top">
+                <span class="tag">probe</span>
+                <span class="tag mono">probe://cve-2024-57727</span>
+              </div>
+              <h3 class="card-title">Terrain Probe — CVE-2024-57727</h3>
+              <p class="card-desc">
+                Reproducible research artifact documenting surface, method, and mitigation guidance.
+              </p>
+              <div class="card-actions">
+                <a class="btn btn-primary" href="./instruments/probe-cve-2024-57727.html">Open Artifact</a>
+                <a class="btn btn-ghost" href="#logs">Related Logs</a>
+              </div>
+            </article>
+      
+            <!-- WiFi tool -->
+            <article class="card card-link">
               <div class="card-top">
                 <span class="tag">tool</span>
-                <span class="tag mono">placeholder</span>
+                <span class="tag mono">tool://signal-survey-kit</span>
               </div>
-              <h3 class="card-title">Recon kit slot</h3>
-              <p class="card-desc">Surface mapping utilities and workflow accelerators.</p>
+              <h3 class="card-title">Signal Survey Kit</h3>
+              <p class="card-desc">
+                A WiFi surveying workflow/tooling set focused on capture, analysis, and controlled testing in scoped
+                environments.
+              </p>
               <div class="card-actions">
-                <button class="btn btn-ghost" type="button" disabled>Artifact pending</button>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-top">
-                <span class="tag">module</span>
-                <span class="tag mono">placeholder</span>
-              </div>
-              <h3 class="card-title">Utility module slot</h3>
-              <p class="card-desc">Small modules that reduce friction during expeditions.</p>
-              <div class="card-actions">
-                <button class="btn btn-ghost" type="button" disabled>Artifact pending</button>
+                <a class="btn btn-primary" href="./instruments/tool-signal-survey-kit.html">Open Artifact</a>
+                <a class="btn btn-ghost" href="./logs/manual-wifi-survey-workflow.html">Workflow</a>
               </div>
             </article>
           </div>
@@ -163,21 +177,55 @@
           <div class="section-head">
             <h2 class="section-title">Expedition Logs</h2>
             <p class="section-desc">
-              Writeups and notes. Each log will follow a consistent structure for clarity.
+              Field manuals and writeups. Each entry follows a consistent structure for clarity.
             </p>
           </div>
-
-          <div class="callout">
-            <div class="callout-title">Log Template (default)</div>
-            <div class="callout-body">
-              <ul class="list">
-                <li><span class="mono">scope</span> — what was in bounds</li>
-                <li><span class="mono">terrain</span> — environment + assumptions</li>
-                <li><span class="mono">method</span> — tools + steps (reproducible)</li>
-                <li><span class="mono">findings</span> — evidence + impact</li>
-                <li><span class="mono">reinforcement</span> — mitigations + hardening</li>
-              </ul>
-            </div>
+      
+          <div class="grid">
+            <article class="card card-link">
+              <div class="card-top">
+                <span class="tag">manual</span>
+                <span class="tag mono">manual://wifi-survey-workflow</span>
+              </div>
+              <h3 class="card-title">Field Manual — WiFi Survey Workflow</h3>
+              <p class="card-desc">
+                Step-by-step workflow for surveying wireless terrain with scope controls and clean evidence capture.
+              </p>
+              <div class="card-actions">
+                <a class="btn btn-primary" href="./logs/manual-wifi-survey-workflow.html">Open Manual</a>
+                <a class="btn btn-ghost" href="./instruments/tool-signal-survey-kit.html">Related Instrument</a>
+              </div>
+            </article>
+      
+            <article class="card card-link">
+              <div class="card-top">
+                <span class="tag">manual</span>
+                <span class="tag mono">manual://cve-triage-workflow</span>
+              </div>
+              <h3 class="card-title">Field Manual — CVE Triage Workflow</h3>
+              <p class="card-desc">
+                A consistent method for validating advisories: environment, PoC hygiene, evidence, and reinforcement notes.
+              </p>
+              <div class="card-actions">
+                <a class="btn btn-primary" href="./logs/manual-cve-triage-workflow.html">Open Manual</a>
+                <a class="btn btn-ghost" href="./instruments/probe-cve-2025-0108.html">Example Probe</a>
+              </div>
+            </article>
+      
+            <article class="card card-link">
+              <div class="card-top">
+                <span class="tag">index</span>
+                <span class="tag mono">log://directory</span>
+              </div>
+              <h3 class="card-title">All Logs</h3>
+              <p class="card-desc">
+                Directory of manuals and writeups as the archive grows.
+              </p>
+              <div class="card-actions">
+                <a class="btn btn-primary" href="./logs/index.html">Open Directory</a>
+                <a class="btn btn-ghost" href="#instruments">Back to Instruments</a>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -185,7 +233,7 @@
       <section id="contact" class="section">
         <div class="container">
           <div class="section-head">
-            <h2 class="section-title">Send a Telegram</h2>
+            <h2 class="section-title">Send a Telegraph</h2>
             <p class="section-desc">We’ll wire this to your preferred contact method later.</p>
           </div>
 
