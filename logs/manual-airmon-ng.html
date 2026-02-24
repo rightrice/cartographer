@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>mapOS — Manual: airmon-ng</title>
+    <link rel="stylesheet" href="../style.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="../index.html"><span class="brand-mark">▦</span><span
+                    class="brand-text">mapOS</span></a>
+            <nav class="nav">
+                <a class="nav-link" href="../index.html#maproom">Maproom</a>
+                <a class="nav-link" href="../index.html#instruments">Instruments</a>
+                <a class="nav-link" href="../index.html#logs">Logs</a>
+                <a class="nav-link" href="../index.html#contact">Channel</a>
+            </nav>
+            <div class="header-actions">
+                <button id="themeToggle" class="btn btn-ghost" type="button"><span class="btn-icon">☾</span><span
+                        class="btn-text">Solarized Dark</span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container">
+            <div class="page-head">
+                <p class="breadcrumbs"><a href="../index.html">mapOS</a> / <a href="./index.html">logs</a> /
+                    manual://airmon-ng</p>
+                <h1 class="page-title">Field Manual — airmon-ng</h1>
+                <p class="page-desc">Adapter state management notes for authorized wireless surveying.</p>
+            </div>
+
+            <div class="split">
+                <section class="content">
+                    <h2>Purpose</h2>
+                    <ul class="list">
+                        <li>Prepare wireless adapter for passive observation in supported contexts.</li>
+                        <li>Stabilize capture conditions and document environment variables.</li>
+                    </ul>
+
+                    <h3>Evidence you should record</h3>
+                    <ul class="list">
+                        <li>Adapter model + chipset + driver version</li>
+                        <li>OS + kernel version (if Linux)</li>
+                        <li>Test location constraints and interference factors</li>
+                    </ul>
+
+                    <h3>Operational safeguards</h3>
+                    <ul class="list">
+                        <li>Keep work inside defined scope and time window.</li>
+                        <li>Avoid actions that disrupt availability unless explicitly approved.</li>
+                        <li>Prefer passive surveying when possible.</li>
+                    </ul>
+
+                    <p class="muted">Public manual omits operational command sequences. Keep exact setup commands in a
+                        private, engagement-scoped playbook.</p>
+                </section>
+
+                <aside class="panel">
+                    <h3>Header</h3>
+                    <div class="kv">
+                        <div class="k">type</div>
+                        <div class="v">manual</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">coordinates</div>
+                        <div class="v mono">manual://airmon-ng</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">terrain</div>
+                        <div class="v">wireless</div>
+                    </div>
+                    <h3 style="margin-top:16px;">Related</h3>
+                    <a class="btn btn-primary" href="../logs/manual-aircrack-ng.html">aircrack-ng</a>
+                    <a class="btn btn-ghost" href="./index.html">All Logs</a>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-left"><span class="muted">©</span> <span id="year"></span> <span
+                    class="muted">mapOS</span></div>
+            <div class="footer-right"><span class="badge" id="themeBadge">Solarized Dark</span><span
+                    class="badge badge-soft mono">archive: active</span></div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+
+</html>

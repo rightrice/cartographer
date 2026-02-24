@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>mapOS — Manual: aircrack-ng</title>
+    <link rel="stylesheet" href="../style.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="../index.html" aria-label="Home">
+                <span class="brand-mark" aria-hidden="true">▦</span>
+                <span class="brand-text">mapOS</span>
+            </a>
+
+            <nav class="nav" aria-label="Primary">
+                <a class="nav-link" href="../index.html#maproom">Maproom</a>
+                <a class="nav-link" href="../index.html#instruments">Instruments</a>
+                <a class="nav-link" href="../index.html#logs">Logs</a>
+                <a class="nav-link" href="../index.html#contact">Channel</a>
+            </nav>
+
+            <div class="header-actions">
+                <button id="themeToggle" class="btn btn-ghost" type="button" aria-label="Toggle theme"
+                    aria-pressed="false">
+                    <span class="btn-icon" aria-hidden="true">☾</span>
+                    <span class="btn-text">Solarized Dark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container">
+            <div class="page-head">
+                <p class="breadcrumbs">
+                    <a href="../index.html">mapOS</a> / <a href="./index.html">logs</a> / manual://aircrack-ng
+                </p>
+                <h1 class="page-title">Field Manual — aircrack-ng</h1>
+                <p class="page-desc">
+                    Wireless assessment workflow notes for authorized environments. This manual focuses on scope
+                    control,
+                    evidence capture, and defensive reporting outcomes.
+                </p>
+            </div>
+
+            <div class="split">
+                <section class="content">
+                    <h2>Scope & Authorization</h2>
+                    <ul class="list">
+                        <li>Written authorization and test window defined</li>
+                        <li>Target SSIDs/BSSIDs explicitly in scope</li>
+                        <li>Rules of engagement include interference limits and safety constraints</li>
+                    </ul>
+
+                    <h3>Hardware Notes</h3>
+                    <ul class="list">
+                        <li>Adapter: Alfa AWUS036AXML (document chipset/driver + OS)</li>
+                        <li>Capture environment: location, channel congestion, distance, interference sources</li>
+                    </ul>
+
+                    <h3>Evidence Capture</h3>
+                    <ul class="list">
+                        <li>Record timestamps, channels, BSSID/SSID inventory, and observed security configuration</li>
+                        <li>Preserve artifacts (pcap/cap files) with chain-of-custody notes</li>
+                        <li>Redact sensitive identifiers when publishing public writeups</li>
+                    </ul>
+
+                    <h3>Assessment Outcomes</h3>
+                    <ul class="list">
+                        <li>Configuration posture: encryption/auth mode, management frame protection status,
+                            segmentation</li>
+                        <li>Exposure: rogue/evil-twin risk, weak PSK policy indicators, unsafe legacy modes</li>
+                        <li>Reinforcement: hardening checklist and monitoring recommendations</li>
+                    </ul>
+
+                    <h3>Public Disclosure Note</h3>
+                    <p class="muted">
+                        Detailed, step-by-step offensive commands are intentionally omitted from public view.
+                        The internal/private version of this manual can include exact command sequences for authorized
+                        testing.
+                    </p>
+                </section>
+
+                <aside class="panel" aria-label="Manual metadata">
+                    <h3>Header</h3>
+                    <div class="kv">
+                        <div class="k">type</div>
+                        <div class="v">manual</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">coordinates</div>
+                        <div class="v mono">manual://aircrack-ng</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">terrain</div>
+                        <div class="v">wireless</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">linked</div>
+                        <div class="v">tool://signal-survey-kit</div>
+                    </div>
+
+                    <h3 style="margin-top:16px;">Related</h3>
+                    <a class="btn btn-primary" href="../instruments/tool-signal-survey-kit.html">Open Instrument</a>
+                    <a class="btn btn-ghost" href="./index.html">All Logs</a>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-left">
+                <span class="muted">©</span>
+                <span id="year"></span>
+                <span class="muted">mapOS</span>
+            </div>
+            <div class="footer-right">
+                <span class="badge" id="themeBadge">Solarized Dark</span>
+                <span class="badge badge-soft mono">archive: active</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+
+</html>

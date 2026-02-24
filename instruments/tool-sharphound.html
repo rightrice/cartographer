@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mapOS | instrument://sharphound</title>
+
+    <!-- Use your existing mapOS stylesheet (Solarized light/dark aware) -->
+    <link rel="stylesheet" href="/assets/css/mapos.css">
+</head>
+
+<body class="instrument-page">
+
+    <header class="instrument-header">
+        <div class="coordinate">instrument://sharphound</div>
+        <h1>SharpHound — Directory Terrain Collector</h1>
+        <div class="classification">Region: Active Directory • Role: Collection / Recon • Output: Graph Intelligence
+        </div>
+    </header>
+
+    <section class="instrument-summary">
+        <p>
+            <strong>Instrument Name:</strong> SharpHound<br>
+            <strong>Paired System:</strong> BloodHound (Graph Analysis)<br>
+            <strong>Primary Function:</strong> Collects AD relationship data for attack-path mapping<br>
+            <strong>Output:</strong> JSON intelligence files (ingested by BloodHound/Neo4j)
+        </p>
+
+        <p>
+            SharpHound is the field collector for BloodHound: it surveys AD objects and relationships and
+            exports a dataset that can be rendered as navigable privilege terrain. This entry focuses on
+            lab/authorized usage patterns and safe operational notes.
+        </p>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Mission Profile</h2>
+        <ul>
+            <li>Enumerate AD objects: users, groups, computers, domains, OUs, GPOs</li>
+            <li>Capture relationships used to identify escalation and lateral movement paths</li>
+            <li>Export structured datasets for ingestion into a graph engine</li>
+        </ul>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Collector Model</h2>
+        <p>
+            SharpHound primarily collects data by querying directory services (LDAP/AD APIs) and optionally
+            performing session/local-admin style discovery depending on collection methods enabled.
+        </p>
+
+        <pre>
+[ Domain Context ]
+      ↓
+ SharpHound Execution
+      ↓
+ JSON Intelligence Files
+      ↓
+ BloodHound Import
+      ↓
+ Neo4j Graph
+</pre>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Operating Conditions</h2>
+        <div class="two-column">
+            <div>
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li>Domain-joined context or valid domain creds</li>
+                    <li>Network reachability to DC / LDAP endpoints</li>
+                    <li>Authorization (lab / approved engagement)</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Outputs</h3>
+                <ul>
+                    <li>JSON collection files (drop into BloodHound)</li>
+                    <li>Optional ZIP packaging (depending on build/flags)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Collection Modes</h2>
+        <p>
+            SharpHound supports multiple collection methods. The goal is to match collection scope to
+            mission objectives and OPSEC constraints.
+        </p>
+
+        <table class="instrument-table">
+            <thead>
+                <tr>
+                    <th>Mode</th>
+                    <th>Purpose</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>All</code></td>
+                    <td>Full terrain sweep</td>
+                    <td>Highest visibility/noise; best for lab or deep audits</td>
+                </tr>
+                <tr>
+                    <td><code>Session</code></td>
+                    <td>User session mapping</td>
+                    <td>Useful for lateral movement planning</td>
+                </tr>
+                <tr>
+                    <td><code>LocalAdmin</code></td>
+                    <td>Admin-to computer mapping</td>
+                    <td>Key for privilege chain discovery</td>
+                </tr>
+                <tr>
+                    <td><code>ACL</code></td>
+                    <td>Permission / control path discovery</td>
+                    <td>High value for misconfig and escalation via rights</td>
+                </tr>
+                <tr>
+                    <td><code>Trusts</code></td>
+                    <td>Trust boundary mapping</td>
+                    <td>Helps model multi-domain expansion routes</td>
+                </tr>
+                <tr>
+                    <td><code>GPOLocalGroup</code></td>
+                    <td>GPO privilege drift discovery</td>
+                    <td>Finds policy-driven admin rights</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Lab Usage (Examples)</h2>
+
+        <h3>Full Collection</h3>
+        <pre><code>.\SharpHound.exe -c All</code></pre>
+
+        <h3>Scoped Collection (Reduced Noise)</h3>
+        <pre><code>.\SharpHound.exe -c Session,LocalAdmin -Throttle 1000 -Jitter 30</code></pre>
+
+        <p class="note">
+            Note: Exact flags and supported options can vary by SharpHound version.
+            Use <code>--help</code> in your lab environment to confirm available parameters.
+        </p>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Ingestion</h2>
+        <ol>
+            <li>Transfer collected JSON files to your operator node</li>
+            <li>Open BloodHound</li>
+            <li>Authenticate to Neo4j</li>
+            <li>Drag &amp; drop JSON files into the BloodHound UI</li>
+            <li>Run built-in and custom queries for pathing</li>
+        </ol>
+    </section>
+
+    <section class="instrument-section">
+        <h2>OPSEC / Telemetry Notes</h2>
+        <ul>
+            <li>Directory enumeration can generate detectable authentication and LDAP query patterns.</li>
+            <li>Session and local-admin discovery can increase network noise depending on method used.</li>
+            <li>Use scoping and throttling when appropriate, and avoid unnecessary full sweeps outside labs.</li>
+            <li>Always operate under explicit authorization and rules of engagement.</li>
+        </ul>
+    </section>
+
+    <section class="instrument-section">
+        <h2>Terrain Legend (What This Unlocks)</h2>
+        <ul>
+            <li><strong>Privilege paths:</strong> shortest routes to high-value groups (e.g., Domain Admins)</li>
+            <li><strong>ACL control chains:</strong> rights that enable password reset, group modification, or
+                delegation abuse</li>
+            <li><strong>Lateral movement corridors:</strong> session presence + admin rights intersections</li>
+            <li><strong>Trust expansion:</strong> routes across domain/forest trust edges</li>
+        </ul>
+    </section>
+
+    <section class="instrument-related">
+        <h2>Related Coordinates</h2>
+        <ul>
+            <li><a href="/logs/bloodhound-ad.html">log://bloodhound-ad</a></li>
+            <li><a href="/logs/kerberoasting.html">log://kerberoasting</a> <span class="muted">(planned)</span></li>
+            <li><a href="/logs/impacket-dcsync.html">log://impacket-dcsync</a> <span class="muted">(planned)</span></li>
+        </ul>
+    </section>
+
+    <footer class="instrument-footer">
+        mapOS — Cartographer of Networks
+    </footer>
+
+</body>
+
+</html>

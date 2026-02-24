@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mapOS | log://kerberoasting</title>
+
+    <!-- Use your existing mapOS stylesheet (Solarized light/dark aware) -->
+    <link rel="stylesheet" href="/assets/css/mapos.css">
+</head>
+
+<body class="log-page">
+
+    <header class="log-header">
+        <div class="coordinate">log://kerberoasting</div>
+        <h1>Kerberoasting — Service Ticket Extraction & Offline Crack Pathing</h1>
+        <div class="classification">Region: Active Directory • Terrain: Kerberos • Vector: Offline Credential Recovery
+        </div>
+    </header>
+
+    <section class="log-summary">
+        <p>
+            <strong>Technique:</strong> Kerberoasting<br>
+            <strong>Objective:</strong> Extract service ticket hashes (TGS) for SPN accounts and attempt offline
+            cracking<br>
+            <strong>Typical Outcome:</strong> Service account credential recovery → privilege escalation / lateral
+            movement<br>
+            <strong>Operational Note:</strong> Authorized lab / engagement use only
+        </p>
+
+        <p>
+            Kerberoasting leverages a design property of Kerberos: any authenticated domain user can request
+            a service ticket for a Service Principal Name (SPN). The ticket is encrypted with the service
+            account’s secret, producing an artifact that can be cracked offline if the password is weak.
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>I. Mission Overview</h2>
+        <p>
+            This Log documents the Kerberoasting workflow as a cartography problem:
+            identify roastable targets (SPNs), collect tickets (TGS), and map recovered credentials to
+            privilege routes (BloodHound edges, group membership, local admin, delegation, etc.).
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>II. Preconditions</h2>
+        <ul>
+            <li>Valid domain credentials (any authenticated user is typically sufficient)</li>
+            <li>Network reachability to a Domain Controller / KDC</li>
+            <li>SPN-bearing service accounts present in the domain</li>
+            <li>Offline cracking capability (hashcat/john) and lawful authorization</li>
+        </ul>
+    </section>
+
+    <section class="log-section">
+        <h2>III. Terrain Model</h2>
+        <p>
+            The terrain is defined by <strong>SPN accounts</strong> and the privilege influence of their credentials.
+            In graph terms: SPN account compromise can unlock edges like <code>AdminTo</code>, privileged group
+            membership, service access, scheduled tasks, or delegation pivots.
+        </p>
+
+        <div class="two-column">
+            <div>
+                <h3>Key Artifacts</h3>
+                <ul>
+                    <li>SPN inventory (roastable targets)</li>
+                    <li>TGS hashes (offline cracking inputs)</li>
+                    <li>Recovered plaintext creds / NTLM material</li>
+                </ul>
+            </div>
+            <div>
+                <h3>High-Value Outcomes</h3>
+                <ul>
+                    <li>Service account reuse across hosts</li>
+                    <li>Privileged group membership</li>
+                    <li>Local admin on critical servers</li>
+                    <li>Delegation misconfig pivots</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="log-section">
+        <h2>IV. Discovery — Identify Roastable SPNs</h2>
+        <p>
+            Identify accounts with SPNs. In many environments, these are service accounts tied to IIS,
+            SQL Server, backup software, monitoring agents, or line-of-business services.
+        </p>
+
+        <h3>Windows (PowerShell) — SPN Listing</h3>
+        <pre><code># Requires appropriate modules / environment; used in authorized labs
+setspn -Q */*</code></pre>
+
+        <p class="note">
+            Note: SPN enumeration methods vary by environment and tooling. The key is to inventory
+            SPN-bearing accounts and prioritize targets with high privilege or broad host coverage.
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>V. Collection — Request Service Tickets (TGS)</h2>
+        <p>
+            Once SPNs are identified, request TGS tickets for those services and extract crackable
+            material. The extraction format depends on the tool, but the goal is the same:
+            produce an offline-crackable ticket hash.
+        </p>
+
+        <h3>Conceptual Flow</h3>
+        <pre>
+[ Authenticated User ]
+        ↓  (TGS request for SPN)
+[ KDC / Domain Controller ]
+        ↓  (ticket encrypted w/ service secret)
+[ TGS Artifact ]
+        ↓  (offline cracking)
+[ Recovered Secret ]
+</pre>
+
+        <p class="note">
+            Tooling specifics are intentionally kept high-level here for public-safe documentation.
+            In a private/internal mapOS vault, you can add exact command-lines based on your lab toolchain.
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>VI. Offline Cracking (Operator Node)</h2>
+        <p>
+            Cracking is an offline phase. Success probability depends heavily on service account password
+            complexity and rotation hygiene.
+        </p>
+
+        <div class="two-column">
+            <div>
+                <h3>Inputs</h3>
+                <ul>
+                    <li>TGS hash material</li>
+                    <li>Wordlists / rules</li>
+                    <li>Compute resources</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Outputs</h3>
+                <ul>
+                    <li>Recovered password (best case)</li>
+                    <li>Credential material for authentication</li>
+                    <li>Account name + service association</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="log-section">
+        <h2>VII. Post-Recovery Pathing</h2>
+        <p>
+            A cracked service credential is rarely the finish line — it’s a new coordinate.
+            Immediately map what the account controls:
+        </p>
+
+        <ul>
+            <li>Group memberships and delegated privileges</li>
+            <li>Host coverage (where the service runs)</li>
+            <li>Local admin rights</li>
+            <li>Service account reuse patterns</li>
+            <li>Any privileged access to DCs, backup systems, hypervisors, or management planes</li>
+        </ul>
+
+        <p>
+            If you are using BloodHound, re-collect or query for routes from the recovered account to
+            high-value targets.
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>VIII. Defensive Cartography</h2>
+        <p>
+            Defenders can reduce Kerberoasting risk primarily by hardening the SPN layer:
+        </p>
+        <ul>
+            <li>Use long, random, rotated passwords for service accounts (or gMSA where possible)</li>
+            <li>Reduce service account privileges (least privilege)</li>
+            <li>Monitor anomalous service ticket request patterns</li>
+            <li>Audit SPN inventory routinely and remove stale SPNs</li>
+            <li>Segment high-value servers and restrict service account blast radius</li>
+        </ul>
+    </section>
+
+    <section class="log-section">
+        <h2>IX. OPSEC / Telemetry Notes</h2>
+        <ul>
+            <li>Service ticket requests can be monitored and correlated (KDC logs / SIEM)</li>
+            <li>High-volume ticket requests increase detectability</li>
+            <li>Prefer scoped targeting (specific SPNs) over sweeping requests on mature environments</li>
+            <li>Always operate under explicit authorization and ROE</li>
+        </ul>
+    </section>
+
+    <section class="log-related">
+        <h2>Related Coordinates</h2>
+        <ul>
+            <li><a href="/logs/bloodhound-ad.html">log://bloodhound-ad</a></li>
+            <li><a href="/instruments/sharphound.html">instrument://sharphound</a></li>
+            <li><a href="/logs/impacket-dcsync.html">log://impacket-dcsync</a> <span class="muted">(planned)</span></li>
+            <li><a href="/logs/asreproasting.html">log://asreproasting</a> <span class="muted">(planned)</span></li>
+        </ul>
+    </section>
+
+    <footer class="log-footer">
+        mapOS — Cartographer of Networks
+    </footer>
+
+</body>
+
+</html>

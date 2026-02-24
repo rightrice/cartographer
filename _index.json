@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "generated": "2026-02-23",
+    "logs": [
+      {
+        "coordinate": "log://bloodhound-ad",
+        "title": "BloodHound AD — Attack Path Cartography",
+        "href": "/logs/bloodhound-ad.html",
+        "region": "Active Directory",
+        "terrain": "Privilege Graph",
+        "vector": "Path Analysis",
+        "updated": "2026-02-23",
+        "description": "Graph-based mapping of AD relationships to reveal escalation and lateral movement paths.",
+        "tags": ["ad", "bloodhound", "graph", "neo4j", "paths"],
+        "related": ["instrument://sharphound", "log://kerberoasting"]
+      },
+      {
+        "coordinate": "log://kerberoasting",
+        "title": "Kerberoasting — Service Ticket Extraction & Offline Crack Pathing",
+        "href": "/logs/kerberoasting.html",
+        "region": "Active Directory",
+        "terrain": "Kerberos",
+        "vector": "Offline Credential Recovery",
+        "updated": "2026-02-23",
+        "description": "Identify SPN accounts, acquire TGS artifacts, and map recovered secrets to privilege routes.",
+        "tags": ["ad", "kerberos", "spn", "tgs", "hashes"],
+        "related": ["log://bloodhound-ad", "instrument://sharphound"]
+      }
+    ]
+  }

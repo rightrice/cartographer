@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>mapOS | log://bloodhound-ad</title>
+    <link rel="stylesheet" href="/assets/css/mapos.css">
+</head>
+
+<body class="log-page">
+
+    <header class="log-header">
+        <div class="coordinate">log://bloodhound-ad</div>
+        <h1>BloodHound AD — Attack Path Cartography</h1>
+        <div class="classification">Region: Active Directory • Terrain: Privilege Graph</div>
+    </header>
+
+    <section class="log-summary">
+        <p>
+            <strong>Instrument:</strong> BloodHound<br>
+            <strong>Collector:</strong> SharpHound<br>
+            <strong>Engine:</strong> Neo4j
+        </p>
+        <p>
+            BloodHound models Active Directory relationships as navigable terrain.
+            It reveals escalation routes, privilege drift, and lateral movement corridors.
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>Mission Overview</h2>
+        <p>
+            In AD environments, privilege is rarely linear.
+            BloodHound converts directory objects into graph nodes and relationships into edges,
+            enabling shortest-path privilege analysis.
+        </p>
+    </section>
+
+    <section class="log-section">
+        <h2>System Architecture</h2>
+        <pre>
+[ Domain Environment ]
+        ↓
+   SharpHound Collection
+        ↓
+   JSON Intelligence Files
+        ↓
+   BloodHound GUI
+        ↓
+   Neo4j Graph Engine
+</pre>
+    </section>
+
+    <section class="log-section">
+        <h2>Deployment (Lab)</h2>
+        <pre><code>sudo apt install bloodhound neo4j
+sudo neo4j console
+bloodhound</code></pre>
+        <p>Rotate default Neo4j credentials immediately.</p>
+    </section>
+
+    <section class="log-section">
+        <h2>Collection (SharpHound)</h2>
+
+        <pre><code>.\SharpHound.exe -c All</code></pre>
+
+        <p>Scoped collection (reduced noise):</p>
+
+        <pre><code>.\SharpHound.exe -c Session,LocalAdmin -Throttle 1000 -Jitter 30</code></pre>
+    </section>
+
+    <section class="log-section">
+        <h2>Graph Model</h2>
+        <div class="two-column">
+            <div>
+                <h3>Nodes</h3>
+                <ul>
+                    <li>User</li>
+                    <li>Group</li>
+                    <li>Computer</li>
+                    <li>Domain</li>
+                    <li>OU</li>
+                    <li>GPO</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Edges</h3>
+                <ul>
+                    <li>MemberOf</li>
+                    <li>AdminTo</li>
+                    <li>HasSession</li>
+                    <li>GenericAll</li>
+                    <li>WriteDACL</li>
+                    <li>AllowedToDelegate</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="log-section">
+        <h2>Operator Queries</h2>
+
+        <pre><code>MATCH (u:User {name:"TARGETUSER"})-[:AdminTo]->(c:Computer)
+RETURN c</code></pre>
+
+        <pre><code>MATCH (u:User)-[:GetChanges*1..]->(d:Domain)
+RETURN u</code></pre>
+
+    </section>
+
+    <section class="log-section">
+        <h2>Exposure Patterns</h2>
+        <ul>
+            <li>Kerberoastable Service Accounts</li>
+            <li>AS-REP Roastable Users</li>
+            <li>ACL Abuse Chains</li>
+            <li>Resource-Based Delegation</li>
+            <li>Shadow Credential Abuse</li>
+            <li>GPO Privilege Drift</li>
+        </ul>
+    </section>
+
+    <section class="log-section">
+        <h2>Defensive Cartography</h2>
+        <p>
+            Blue teams use BloodHound to identify unintended admin chains,
+            validate tiered models, and reduce lateral movement exposure.
+        </p>
+    </section>
+
+    <section class="log-related">
+        <h2>Related Coordinates</h2>
+        <ul>
+            <li><a href="/logs/impacket-dcsync.html">log://impacket-dcsync</a></li>
+            <li><a href="/logs/kerberoasting.html">log://kerberoasting</a></li>
+            <li><a href="/instruments/sharphound.html">instrument://sharphound</a></li>
+        </ul>
+    </section>
+
+    <footer class="log-footer">
+        mapOS — Cartographer of Networks
+    </footer>
+
+</body>
+
+</html>

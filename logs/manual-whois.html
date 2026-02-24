@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>mapOS — Manual: /etc/hosts</title>
+    <link rel="stylesheet" href="../style.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="../index.html"><span class="brand-mark">▦</span><span
+                    class="brand-text">mapOS</span></a>
+            <nav class="nav">
+                <a class="nav-link" href="../index.html#maproom">Maproom</a>
+                <a class="nav-link" href="../index.html#instruments">Instruments</a>
+                <a class="nav-link" href="../index.html#logs">Logs</a>
+                <a class="nav-link" href="../index.html#contact">Channel</a>
+            </nav>
+            <div class="header-actions">
+                <button id="themeToggle" class="btn btn-ghost" type="button" aria-label="Toggle theme"
+                    aria-pressed="false">
+                    <span class="btn-icon">☾</span><span class="btn-text">Solarized Dark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container">
+            <div class="page-head">
+                <p class="breadcrumbs"><a href="../index.html">mapOS</a> / <a href="./index.html">logs</a> /
+                    manual://etc-hosts</p>
+                <h1 class="page-title">Field Manual — /etc/hosts</h1>
+                <p class="page-desc">Local name overrides for controlled testing, lab routing, and deterministic
+                    resolution.</p>
+            </div>
+
+            <div class="split">
+                <section class="content">
+                    <h2>Purpose</h2>
+                    <ul class="list">
+                        <li>Force a hostname to resolve to a specific IP (lab/validation).</li>
+                        <li>Stabilize tooling that depends on DNS names (virtual hosts, TLS SNI).</li>
+                        <li>Temporary overrides when DNS changes aren’t possible or desirable.</li>
+                    </ul>
+
+                    <h3>Where it lives</h3>
+                    <ul class="list">
+                        <li>Linux/macOS: <span class="mono">/etc/hosts</span></li>
+                        <li>Windows: <span class="mono">C:\Windows\System32\drivers\etc\hosts</span></li>
+                    </ul>
+
+                    <h3>Operational notes</h3>
+                    <ul class="list">
+                        <li>Changes are local-only to the current machine.</li>
+                        <li>Prefer temporary changes; document additions in your log.</li>
+                        <li>Flush DNS cache if resolution doesn’t update (varies by OS).</li>
+                    </ul>
+
+                    <h3>Example entry (safe)</h3>
+                    <pre class="codeblock"># IP address    hostname(s)
+192.0.2.10       app.local
+192.0.2.11       api.app.local</pre>
+
+                    <h3>Reinforcement</h3>
+                    <ul class="list">
+                        <li>Track overrides to avoid “mystery routing” during future work.</li>
+                        <li>Remove entries after engagement to prevent stale resolution.</li>
+                    </ul>
+                </section>
+
+                <aside class="panel">
+                    <h3>Header</h3>
+                    <div class="kv">
+                        <div class="k">type</div>
+                        <div class="v">manual</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">coordinates</div>
+                        <div class="v mono">manual://etc-hosts</div>
+                    </div>
+                    <div class="kv">
+                        <div class="k">terrain</div>
+                        <div class="v">name resolution</div>
+                    </div>
+                    <h3 style="margin-top:16px;">Links</h3>
+                    <a class="btn btn-ghost" href="./index.html">All Logs</a>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-left"><span class="muted">©</span> <span id="year"></span> <span
+                    class="muted">mapOS</span></div>
+            <div class="footer-right"><span class="badge" id="themeBadge">Solarized Dark</span><span
+                    class="badge badge-soft mono">archive: active</span></div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+
+</html>
