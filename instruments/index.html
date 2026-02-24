@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mapOS | instruments://index</title>
+
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="log-page" data-theme="dark">
+    <header class="log-header">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div>
+                <div class="coordinate">instruments://index</div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <a class="nav-pill" href="/index.html" aria-label="Back to main index">← Return to mapOS</a>
+                <button id="themeToggle" class="nav-pill" type="button" aria-label="Toggle light/dark mode">
+                    ☀︎/☾ theme
+                </button>
+            </div>
+        </div>
+
+        <h1>Instruments — Coordinate Index</h1>
+        <div class="classification">mapOS • Cartographer of Networks • Searchable instrument registry</div>
+    </header>
+
+    <section class="log-summary">
+        <p>
+            This page is generated dynamically from <code>/instruments/_index.json</code>.
+            Add new instruments by updating the manifest entry — the registry renders automatically.
+        </p>
+
+        <div class="two-column" style="margin-top:12px;">
+            <div>
+                <label for="q"
+                    style="display:block; font-family: var(--map-font-mono); font-size:12px; color: var(--map-muted); margin-bottom:6px;">
+                    Search (title, coordinate, tags)
+                </label>
+                <input id="q" type="search" placeholder="e.g., cve-2025-0108, heartbleed, traversal, auth bypass"
+                    style="width:100%; padding:10px 12px; border-radius: 12px; border:1px solid var(--map-border); background: rgba(0,0,0,0.18); color: var(--map-text); font-family: var(--map-font-mono);">
+            </div>
+
+            <div>
+                <label for="category"
+                    style="display:block; font-family: var(--map-font-mono); font-size:12px; color: var(--map-muted); margin-bottom:6px;">
+                    Category filter
+                </label>
+                <select id="category"
+                    style="width:100%; padding:10px 12px; border-radius: 12px; border:1px solid var(--map-border); background: rgba(0,0,0,0.18); color: var(--map-text); font-family: var(--map-font-mono);">
+                    <option value="">All categories</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+            <button id="sortNewest" type="button"
+                style="padding:8px 10px; border-radius: 999px; border: 1px solid rgba(42,161,152,0.45); background: rgba(42,161,152,0.10); color: var(--map-text); font-family: var(--map-font-mono); cursor:pointer;">
+                Sort: Newest
+            </button>
+            <button id="sortAlpha" type="button"
+                style="padding:8px 10px; border-radius: 999px; border: 1px solid rgba(38,139,210,0.45); background: rgba(38,139,210,0.10); color: var(--map-text); font-family: var(--map-font-mono); cursor:pointer;">
+                Sort: A→Z
+            </button>
+            <span id="count" class="muted" style="align-self:center;"></span>
+        </div>
+    </section>
+
+    <section class="log-section">
+        <h2>Registry</h2>
+        <div id="status" class="note" style="display:none;"></div>
+        <div id="grid"
+            style="margin-top:12px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;"></div>
+    </section>
+
+    <footer class="log-footer">
+        mapOS — Cartographer of Networks
+    </footer>
+
+    <script>
+        (() => {
+            const MANIFEST_URL = "/instruments/_index.json";
+
+            const els = {
+                q: document.getElementById("q"),
+                category: document.getElementById("category"),
+                grid: document.getElementById("grid"),
+                status: document.getElementById("status"),
+                count: document.getElementById("count"),
+                sortNewest: document.getElementById("sortNewest"),
+                sortAlpha: document.getElementById("sortAlpha"),
+            };
+
+            let entries = [];
+            let sortMode = "newest"; // newest | alpha
+
+            function showStatus(msg) {
+                els.status.style.display = "block";
+                els.status.textContent = msg;
+            }
+
+            function hideStatus() {
+                els.status.style.display = "none";
+                els.status.textContent = "";
+            }
+
+            function normalize(s) {
+                return (s || "").toString().toLowerCase().trim();
+            }
+
+            function uniqueSorted(arr) {
+                return [...new Set(arr)].filter(Boolean).sort((a, b) => a.localeCompare(b));
+            }
+
+            function parseDate(d) {
+                // Expect YYYY-MM-DD. If missing/invalid, push old.
+                const t = Date.parse(d);
+                return Number.isFinite(t) ? t : 0;
+            }
+
+            function buildCategoryOptions() {
+                const cats = uniqueSorted(entries.map(e => e.category));
+                for (const c of cats) {
+                    const opt = document.createElement("option");
+                    opt.value = c;
+                    opt.textContent = c;
+                    els.category.appendChild(opt);
+                }
+            }
+
+            function entryMatches(e, q, category) {
+                if (category && e.category !== category) return false;
+
+                if (!q) return true;
+                const hay = [
+                    e.coordinate,
+                    e.title,
+                    e.category,
+                    e.vendor,
+                    e.product,
+                    e.cvss,
+                    e.vector,
+                    e.privs,
+                    e.fix,
+                    (e.tags || []).join(" "),
+                    (e.related || []).join(" "),
+                ].map(normalize).join(" | ");
+                return hay.includes(q);
+            }
+
+            function sortEntries(list) {
+                if (sortMode === "alpha") {
+                    return [...list].sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+                }
+                // newest first
+                return [...list].sort((a, b) => parseDate(b.updated) - parseDate(a.updated));
+            }
+
+            function pill(text) {
+                const span = document.createElement("span");
+                span.style.display = "inline-flex";
+                span.style.alignItems = "center";
+                span.style.gap = "6px";
+                span.style.padding = "4px 8px";
+                span.style.borderRadius = "999px";
+                span.style.border = "1px solid rgba(88,110,117,0.35)";
+                span.style.background = "rgba(0,0,0,0.14)";
+                span.style.fontFamily = "var(--map-font-mono)";
+                span.style.fontSize = "12px";
+                span.style.color = "var(--map-muted)";
+                span.textContent = text;
+                return span;
+            }
+
+            function tagPill(text) {
+                const tag = pill(`#${text}`);
+                tag.style.border = "1px solid rgba(42,161,152,0.25)";
+                tag.style.background = "rgba(42,161,152,0.06)";
+                return tag;
+            }
+
+            function metaPill(text) {
+                // Slightly stronger emphasis for triage fields
+                const m = pill(text);
+                m.style.border = "1px solid rgba(38,139,210,0.30)";
+                m.style.background = "rgba(38,139,210,0.06)";
+                return m;
+            }
+
+            function card(e) {
+                const a = document.createElement("a");
+                a.href = e.href;
+                a.style.display = "block";
+                a.style.padding = "14px 14px";
+                a.style.borderRadius = "14px";
+                a.style.border = "1px solid rgba(88,110,117,0.35)";
+                a.style.background = "rgba(0,0,0,0.14)";
+                a.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)";
+                a.style.textDecoration = "none";
+
+                const top = document.createElement("div");
+                top.style.display = "flex";
+                top.style.justifyContent = "space-between";
+                top.style.gap = "10px";
+                top.style.alignItems = "baseline";
+
+                const coord = document.createElement("div");
+                coord.style.fontFamily = "var(--map-font-mono)";
+                coord.style.fontSize = "12px";
+                coord.style.color = "var(--map-muted)";
+                coord.textContent = e.coordinate;
+
+                const date = document.createElement("div");
+                date.style.fontFamily = "var(--map-font-mono)";
+                date.style.fontSize = "12px";
+                date.style.color = "var(--map-dim)";
+                date.textContent = e.updated ? `updated: ${e.updated}` : "";
+
+                top.appendChild(coord);
+                top.appendChild(date);
+
+                const title = document.createElement("div");
+                title.style.marginTop = "8px";
+                title.style.fontSize = "16px";
+                title.style.color = "var(--map-text)";
+                title.style.fontWeight = "650";
+                title.textContent = e.title || e.coordinate;
+
+                const meta = document.createElement("div");
+                meta.style.marginTop = "8px";
+                meta.style.display = "flex";
+                meta.style.flexWrap = "wrap";
+                meta.style.gap = "8px";
+
+                // Category + vendor/product context
+                if (e.category) meta.appendChild(pill(`Category: ${e.category}`));
+                if (e.vendor) meta.appendChild(pill(`Vendor: ${e.vendor}`));
+                if (e.product) meta.appendChild(pill(`Product: ${e.product}`));
+
+                // Triage-critical fields (requested)
+                if (e.cvss) meta.appendChild(metaPill(`CVSS: ${e.cvss}`));
+                if (e.vector) meta.appendChild(metaPill(`Vector: ${e.vector}`));
+                if (e.privs) meta.appendChild(metaPill(`Privs: ${e.privs}`));
+                if (e.fix) meta.appendChild(metaPill(`Fix: ${e.fix}`));
+
+                const desc = document.createElement("div");
+                desc.style.marginTop = "10px";
+                desc.style.color = "var(--map-muted)";
+                desc.style.fontSize = "13px";
+                desc.textContent = e.description || "";
+
+                const tags = document.createElement("div");
+                tags.style.marginTop = "12px";
+                tags.style.display = "flex";
+                tags.style.flexWrap = "wrap";
+                tags.style.gap = "8px";
+
+                for (const t of (e.tags || []).slice(0, 6)) {
+                    tags.appendChild(tagPill(t));
+                }
+
+                a.appendChild(top);
+                a.appendChild(title);
+                if (meta.childNodes.length) a.appendChild(meta);
+                if (e.description) a.appendChild(desc);
+                if ((e.tags || []).length) a.appendChild(tags);
+
+                return a;
+            }
+
+            function render() {
+                const q = normalize(els.q.value);
+                const category = els.category.value;
+
+                const filtered = entries.filter(e => entryMatches(e, q, category));
+                const sorted = sortEntries(filtered);
+
+                // responsive grid tweak
+                const wide = window.matchMedia("(min-width: 940px)").matches;
+                els.grid.style.gridTemplateColumns = wide ? "repeat(2, minmax(0, 1fr))" : "repeat(1, minmax(0, 1fr))";
+
+                els.grid.innerHTML = "";
+                for (const e of sorted) els.grid.appendChild(card(e));
+
+                els.count.textContent = `${sorted.length} / ${entries.length} instruments`;
+            }
+
+            async function init() {
+                try {
+                    showStatus(`Loading manifest: ${MANIFEST_URL}`);
+                    const res = await fetch(MANIFEST_URL, { cache: "no-store" });
+                    if (!res.ok) throw new Error(`HTTP ${res.status} fetching manifest`);
+                    const data = await res.json();
+
+                    if (!data || !Array.isArray(data.instruments)) throw new Error("Manifest missing { instruments: [...] }");
+
+                    entries = data.instruments.map(x => ({
+                        coordinate: x.coordinate || "",
+                        title: x.title || "",
+                        href: x.href || "",
+                        category: x.category || "",     // probe | scanner | tool | etc
+                        vendor: x.vendor || "",
+                        product: x.product || "",
+                        cvss: x.cvss || "",             // e.g., "8.8" or "7.5"
+                        vector: x.vector || "",         // e.g., "Network"
+                        privs: x.privileges || "",      // e.g., "None"
+                        fix: x.fix_available || "",     // e.g., "Yes"
+                        description: x.description || "",
+                        tags: Array.isArray(x.tags) ? x.tags : [],
+                        related: Array.isArray(x.related) ? x.related : [],
+                        updated: x.updated || "",
+                    })).filter(e => e.coordinate && e.href);
+
+                    hideStatus();
+                    buildCategoryOptions();
+                    render();
+                } catch (err) {
+                    showStatus(`Failed to load instrument index. ${err.message}`);
+                    console.error(err);
+                }
+            }
+
+            els.q.addEventListener("input", render);
+            els.category.addEventListener("change", render);
+            window.addEventListener("resize", render);
+
+            els.sortNewest.addEventListener("click", () => {
+                sortMode = "newest";
+                els.sortNewest.style.borderColor = "rgba(42,161,152,0.55)";
+                els.sortAlpha.style.borderColor = "rgba(38,139,210,0.45)";
+                render();
+            });
+
+            els.sortAlpha.addEventListener("click", () => {
+                sortMode = "alpha";
+                els.sortAlpha.style.borderColor = "rgba(42,161,152,0.55)";
+                els.sortNewest.style.borderColor = "rgba(42,161,152,0.45)";
+                render();
+            });
+
+            init();
+        })();
+
+        (() => {
+            const STORAGE_KEY = "mapos-theme"; // "light" | "dark"
+            const body = document.body;
+            const btn = document.getElementById("themeToggle");
+
+            function getPreferredTheme() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved === "light" || saved === "dark") return saved;
+                return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+            }
+
+            function applyTheme(theme) {
+                body.setAttribute("data-theme", theme);
+                localStorage.setItem(STORAGE_KEY, theme);
+                if (btn) btn.textContent = theme === "light" ? "☾ dark" : "☀︎ light";
+            }
+
+            // init
+            applyTheme(getPreferredTheme());
+
+            // toggle
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    const current = body.getAttribute("data-theme") || "dark";
+                    applyTheme(current === "dark" ? "light" : "dark");
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

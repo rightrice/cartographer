@@ -1,0 +1,52 @@
+{
+    "instruments": [
+      {
+        "coordinate": "probe://cve-2025-0108",
+        "title": "Terrain Probe — CVE-2025-0108",
+        "href": "/instruments/probe-cve-2025-0108.html",
+        "category": "probe",
+        "vendor": "Palo Alto Networks",
+        "product": "PAN-OS",
+        "cvss": "8.8 (High)",
+        "vector": "Network",
+        "privileges": "None",
+        "fix_available": "Yes",
+        "description": "Authentication bypass in the PAN-OS management web interface enabling unauthenticated invocation of certain PHP scripts.",
+        "tags": ["cve", "pan-os", "auth-bypass", "management-plane"],
+        "related": ["logs://index"],
+        "updated": "2025-02-12"
+      },
+      {
+        "coordinate": "probe://cve-2024-57727",
+        "title": "Terrain Probe — CVE-2024-57727",
+        "href": "/instruments/probe-cve-2024-57727.html",
+        "category": "probe",
+        "vendor": "SimpleHelp",
+        "product": "Remote Support / RMM",
+        "cvss": "7.5 (High)",
+        "vector": "Network",
+        "privileges": "None",
+        "fix_available": "Yes",
+        "description": "Unauthenticated path traversal allowing arbitrary file download from affected SimpleHelp servers.",
+        "tags": ["cve", "simplehelp", "path-traversal", "file-read", "pre-auth"],
+        "related": ["logs://index"],
+        "updated": "2025-01-01"
+      },
+      {
+        "coordinate": "probe://cve-2014-0160",
+        "title": "Terrain Probe — CVE-2014-0160",
+        "href": "/instruments/probe-cve-2014-0160.html",
+        "category": "probe",
+        "vendor": "OpenSSL Project",
+        "product": "OpenSSL (libssl)",
+        "cvss": "7.5 (High)",
+        "vector": "Network",
+        "privileges": "None",
+        "fix_available": "Yes",
+        "description": "Heartbleed: TLS/DTLS heartbeat out-of-bounds read enabling remote memory disclosure.",
+        "tags": ["cve", "openssl", "heartbleed", "info-disclosure", "tls"],
+        "related": ["logs://index"],
+        "updated": "2014-04-07"
+      }
+    ]
+  }
