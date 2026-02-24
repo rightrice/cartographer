@@ -448,3 +448,134 @@ a:hover { text-decoration: underline; }
   .nav { display: none; } /* keep it clean; add hamburger later if desired */
   .lore-row { grid-template-columns: 80px 1fr; }
 }
+
+/* Link-like cards (clickable feel without making entire card a link) */
+.card-link {
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.card-link:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--accent) 28%, var(--border));
+}
+
+.page {
+  padding: 34px 0 50px;
+}
+
+.page-head {
+  margin-bottom: 16px;
+}
+
+.breadcrumbs {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.breadcrumbs a {
+  color: var(--muted);
+}
+
+.breadcrumbs a:hover {
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.page-title {
+  margin: 0 0 10px;
+  color: var(--text-strong);
+  letter-spacing: -0.4px;
+  font-size: clamp(26px, 3vw, 38px);
+}
+
+.page-desc {
+  margin: 0 0 16px;
+  color: var(--muted);
+  max-width: 76ch;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--bg-elev) 70%, transparent);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  color: var(--text-strong);
+  font-family: var(--mono);
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed color-mix(in oklab, var(--border) 70%, transparent);
+}
+
+.kv:last-child {
+  border-bottom: none;
+}
+
+.kv .k {
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.kv .v {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.content {
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--bg-elev) 70%, transparent);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.content h2 {
+  margin: 0 0 10px;
+  color: var(--text-strong);
+  letter-spacing: -0.2px;
+}
+
+.content h3 {
+  margin: 18px 0 10px;
+  color: var(--text-strong);
+  font-family: var(--mono);
+}
+
+.codeblock {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--bg) 88%, var(--bg-elev));
+  color: var(--text-strong);
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .kv {
+    grid-template-columns: 90px 1fr;
+  }
+}
