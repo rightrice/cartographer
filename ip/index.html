@@ -5,105 +5,96 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>mapOS | ip://lookup</title>
-
-    <!-- mapOS global stylesheet -->
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body class="log-page" data-theme="dark">
+    <a class="skip-link" href="#main">Skip</a>
+
+    <!-- Header card (same as logs) -->
     <header class="log-header">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
             <div>
                 <div class="coordinate">ip://lookup</div>
-                <div class="subtitle">Public address probe (fast, ad-free)</div>
+                <h1>Public IP Probe</h1>
+                <div class="classification">Fast, ad-free lookup (Cloudflare-first)</div>
             </div>
 
             <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <a class="btn" href="/">cd /home</a>
-                <a class="btn" href="/logs/">cd /logs</a>
-                <a class="btn" href="/instruments/">cd /instruments</a>
-                <button id="themeToggle" class="nav-pill" type="button" aria-label="Toggle light/dark mode">
-                    ☀︎/☾ theme
-                </button>
+                <a class="nav-pill" href="/">cd /home</a>
+                <a class="nav-pill" href="/logs/">cd /logs</a>
+                <a class="nav-pill" href="/instruments/">cd /instruments</a>
+                <button class="nav-pill" id="refresh" type="button">↻ refresh</button>
             </div>
         </div>
     </header>
 
-    <main class="log-main">
-        <section class="panel">
-            <h1 class="panel-title">>_ ip probe</h1>
-            <p class="panel-subtitle" id="status">initializing…</p>
+    <main id="main">
+        <!-- Results -->
+        <section class="log-section">
+            <h2>Signal</h2>
 
-            <div class="kv-grid" style="margin-top:14px;">
-                <div class="kv">
-                    <div class="k">ip</div>
-                    <div class="v" id="public-ip">loading…</div>
-                    <div class="actions">
-                        <button class="btn btn-small" id="copy-ip" type="button">copy</button>
-                        <button class="btn btn-small" id="refresh" type="button">refresh</button>
-                    </div>
-                </div>
+            <div class="note" id="status">>_ initializing…</div>
 
-                <div class="kv">
-                    <div class="k">source</div>
-                    <div class="v" id="source">—</div>
-                </div>
-
-                <div class="kv">
-                    <div class="k">loc</div>
-                    <div class="v" id="loc">—</div>
-                </div>
-
-                <div class="kv">
-                    <div class="k">colo</div>
-                    <div class="v" id="colo">—</div>
-                </div>
-
-                <div class="kv">
-                    <div class="k">tls</div>
-                    <div class="v" id="tls">—</div>
-                </div>
-
-                <div class="kv">
-                    <div class="k">ua</div>
-                    <div class="v" id="ua">—</div>
-                </div>
+            <!-- Reuse your existing kv layout -->
+            <div class="kv">
+                <div class="k">ip</div>
+                <div class="v" id="public-ip">loading…</div>
             </div>
 
-            <div class="toast" id="toast" role="status" aria-live="polite"></div>
+            <div class="kv">
+                <div class="k">source</div>
+                <div class="v" id="source">—</div>
+            </div>
 
-            <p class="note">
-                Displays your <b>public</b> IP (what the internet sees). No LAN/private IP discovery.
+            <div class="kv">
+                <div class="k">loc</div>
+                <div class="v" id="loc">—</div>
+            </div>
+
+            <div class="kv">
+                <div class="k">colo</div>
+                <div class="v" id="colo">—</div>
+            </div>
+
+            <div class="kv">
+                <div class="k">tls</div>
+                <div class="v" id="tls">—</div>
+            </div>
+
+            <div class="kv">
+                <div class="k">ua</div>
+                <div class="v" id="ua">—</div>
+            </div>
+
+            <div class="ip-actions">
+                <button class="nav-pill" id="copy-ip" type="button">copy</button>
+                <button class="nav-pill" id="select-ip" type="button">select</button>
+            </div>
+
+            <div class="ip-toast" id="toast" role="status" aria-live="polite"></div>
+
+            <p class="note" style="margin-top:12px;">
+                This shows your <b>public</b> IP (the address seen by the internet). It does not attempt LAN/private IP
+                discovery.
             </p>
+        </section>
+
+        <!-- Optional: raw trace (handy for troubleshooting) -->
+        <section class="log-section">
+            <h2>Trace</h2>
+            <p class="muted">If you’re behind Cloudflare Pages, this is pulled from <code>/cdn-cgi/trace</code>.</p>
+            <pre><code id="trace-raw">loading…</code></pre>
         </section>
     </main>
 
     <footer class="log-footer">
-        <div class="footer-inner">
-            <span>mapOS</span>
-            <span class="muted">last updated: <span id="update"></span></span>
-        </div>
+        mapOS — last updated: <span id="update"></span>
     </footer>
 
     <script>
-        // last modified stamp (matches how your other pages show “last updated”)
         document.getElementById("update").textContent = new Date(document.lastModified).toLocaleString();
 
-        // Optional theme toggle: toggles data-theme between dark/light
-        document.getElementById("themeToggle").addEventListener("click", () => {
-            const b = document.body;
-            b.dataset.theme = (b.dataset.theme === "dark") ? "light" : "dark";
-            try { localStorage.setItem("mapos_theme", b.dataset.theme); } catch { }
-        });
-
-        // Load stored theme if present
-        try {
-            const saved = localStorage.getItem("mapos_theme");
-            if (saved === "dark" || saved === "light") document.body.dataset.theme = saved;
-        } catch { }
-    </script>
-
-    <script>
         const els = {
             status: document.getElementById("status"),
             ip: document.getElementById("public-ip"),
@@ -112,15 +103,17 @@
             colo: document.getElementById("colo"),
             tls: document.getElementById("tls"),
             ua: document.getElementById("ua"),
+            trace: document.getElementById("trace-raw"),
             toast: document.getElementById("toast"),
             copy: document.getElementById("copy-ip"),
+            select: document.getElementById("select-ip"),
             refresh: document.getElementById("refresh"),
         };
 
-        function toast(msg) {
+        function showToast(msg) {
             els.toast.textContent = msg;
             els.toast.classList.add("show");
-            setTimeout(() => els.toast.classList.remove("show"), 1400);
+            setTimeout(() => els.toast.classList.remove("show"), 1200);
         }
 
         function parseTrace(text) {
@@ -134,10 +127,12 @@
 
         async function fetchCloudflareTrace() {
             const res = await fetch("/cdn-cgi/trace", { cache: "no-store" });
-            if (!res.ok) throw new Error("no cf trace");
-            const trace = parseTrace(await res.text());
+            if (!res.ok) throw new Error("cloudflare trace unavailable");
+            const raw = await res.text();
+            const trace = parseTrace(raw);
 
             return {
+                raw,
                 ip: trace.ip || null,
                 loc: trace.loc || "—",
                 colo: trace.colo || "—",
@@ -151,6 +146,7 @@
             if (!res.ok) throw new Error("ipify failed");
             const data = await res.json();
             return {
+                raw: "",
                 ip: data.ip || null,
                 loc: "—",
                 colo: "—",
@@ -159,14 +155,15 @@
             };
         }
 
-        async function loadIp() {
-            els.status.textContent = "fetching…";
+        async function load() {
+            els.status.textContent = ">_ fetching…";
             els.ip.textContent = "loading…";
             els.source.textContent = "—";
             els.loc.textContent = "—";
             els.colo.textContent = "—";
             els.tls.textContent = "—";
             els.ua.textContent = navigator.userAgent || "—";
+            els.trace.textContent = "loading…";
 
             try {
                 const info = await fetchCloudflareTrace();
@@ -177,9 +174,12 @@
                 els.loc.textContent = info.loc;
                 els.colo.textContent = info.colo;
                 els.tls.textContent = info.tls;
-                els.status.textContent = "ok";
+                els.trace.textContent = info.raw.trim() || "(empty)";
+                els.status.textContent = ">_ ok";
                 return;
-            } catch (_) { }
+            } catch (e) {
+                // fall through
+            }
 
             try {
                 const info = await fetchIpifyFallback();
@@ -187,29 +187,46 @@
 
                 els.ip.textContent = info.ip;
                 els.source.textContent = info.source;
-                els.status.textContent = "ok (fallback)";
-            } catch (_) {
+                els.trace.textContent = "(cloudflare trace unavailable; using fallback)";
+                els.status.textContent = ">_ ok (fallback)";
+            } catch (e) {
                 els.ip.textContent = "error";
                 els.source.textContent = "error";
-                els.status.textContent = "failed";
-                toast("failed to fetch ip");
+                els.trace.textContent = "error";
+                els.status.textContent = ">_ failed";
+                showToast("failed to fetch ip");
             }
         }
 
+        els.refresh.addEventListener("click", load);
+
         els.copy.addEventListener("click", async () => {
             const val = (els.ip.textContent || "").trim();
-            if (!val || val === "loading…" || val === "error") return toast("no ip to copy");
+            if (!val || val === "loading…" || val === "error") return showToast("no ip");
 
             try {
                 await navigator.clipboard.writeText(val);
-                toast("copied");
+                showToast("copied");
             } catch {
-                toast("clipboard blocked");
+                showToast("clipboard blocked");
             }
         });
 
-        els.refresh.addEventListener("click", loadIp);
-        document.addEventListener("DOMContentLoaded", loadIp);
+        els.select.addEventListener("click", () => {
+            const val = (els.ip.textContent || "").trim();
+            if (!val || val === "loading…" || val === "error") return showToast("no ip");
+
+            const r = document.createRange();
+            r.selectNodeContents(els.ip);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(r);
+            showToast("selected");
+        });
+
+        document.addEventListener("DOMContentLoaded", load);
+        document.documentElement.dataset.theme = "dark"; // or "light"
+        document.body.dataset.theme = "dark";
     </script>
 </body>
 
