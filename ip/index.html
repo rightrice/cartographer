@@ -143,7 +143,7 @@
         function applyTheme(t) {
             const theme = (t === "light") ? "light" : "dark";
             root.dataset.theme = theme;
-            themeLabel.textContent = theme === "light" ? "Solarized Light" : "Solarized Dark";
+            themeLabel.textContent = theme === "light" ? "Sun" : "Moon";
             try { localStorage.setItem(THEME_KEY, theme); } catch { }
         }
 
