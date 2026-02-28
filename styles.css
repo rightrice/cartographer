@@ -999,7 +999,7 @@ a:hover { text-decoration: underline; }
   max-width: var(--map-maxw);
 }
 
-/* ---------- Optional: better scrolling behavior for code blocks on touch ---------- */
+/* ---------- better scrolling behavior for code blocks on touch ---------- */
 @supports (-webkit-overflow-scrolling: touch) {
   .log-page pre {
     -webkit-overflow-scrolling: touch;
@@ -1032,4 +1032,109 @@ a:hover { text-decoration: underline; }
 .log-page .nav-pill:hover {
   border-color: rgba(42, 161, 152, 0.55);
   background: rgba(42, 161, 152, 0.08);
+}
+/* ========== ip://lookup page additions (mapOS) ========== */
+
+.panel {
+  max-width: 980px;
+  margin: 22px auto;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body[data-theme="dark"] .panel {
+  border-color: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+.panel-subtitle {
+  margin: 6px 0 0 0;
+  opacity: 0.8;
+}
+
+.kv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.kv {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+body[data-theme="dark"] .kv {
+  border-color: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.kv .k {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+
+.kv .v {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  word-break: break-word;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn.btn-small {
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.toast {
+  display: none;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.05);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body[data-theme="dark"] .toast {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.toast.show {
+  display: block;
+}
+
+.note {
+  margin-top: 14px;
+  opacity: 0.8;
+}
+
+.log-footer .footer-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.muted {
+  opacity: 0.7;
 }
